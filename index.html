@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click to Flip</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      padding: 24px 16px;
+      background: linear-gradient(to top, #f97316, #fb923c, #fbbf24, #fde68a, #bae6fd, #7dd3fc, #38bdf8, #0369a1);
+      gap: 0;
+    }
+
+    .btn-flip {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.25);
+      color: #7c2d12;
+      font-family: sans-serif;
+      font-size: clamp(12px, 1.8vw, 15px);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50px;
+      padding: 10px 28px;
+      cursor: pointer;
+      white-space: nowrap;
+      backdrop-filter: blur(6px);
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-flip:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .card-container {
+      /* max 460px wide, shrinks on smaller screens with 90vw cap */
+      width: min(460px, 90vw);
+      /* maintain 2:3 ratio matching image 682×1023 */
+      aspect-ratio: 682 / 1023;
+      /* also cap height so card never overflows viewport vertically */
+      max-height: calc(100dvh - 100px);
+      perspective: 1200px;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s ease;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: clamp(8px, 1.5vw, 14px);
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-front img,
+    .card-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Touch devices — slightly faster flip */
+    @media (hover: none) {
+      .card {
+        transition: transform 0.45s ease;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="btn-flip" onclick="document.querySelector('.card').classList.toggle('flipped')">Click to Flip</button>
+
+  <div class="card-container">
+    <div class="card">
+      <div class="card-front">
+        <img src="01.png" alt="Front">
+      </div>
+      <div class="card-back">
+        <img src="02.png" alt="Back">
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
