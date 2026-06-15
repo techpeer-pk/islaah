@@ -211,8 +211,8 @@
 
         .input-wrapper {
             display: flex;
-            gap: 12px;
-            align-items: flex-end;
+            /* gap: 12px;
+            align-items: flex-end; */
         }
 
         .input-field {
@@ -452,12 +452,12 @@
             <div class="input-group">
                 <label>Earth Years</label>
                 <div class="input-wrapper">
-                    <input type="number" id="earthYears" class="input-field" placeholder="Enter years" value="16">
-                    <div class="unit">Years</div>
+                    <input type="number" id="earthYears" class="input-field" placeholder="Enter years" value="10">
+                    <!-- <div class="unit">Years</div> -->
                 </div>
             </div>
 
-            <div class="divider">✨</div>
+            <!-- <div class="divider">✨</div> -->
 
             <div class="result-group">
                 <div class="result-label">Time on Planet</div>
@@ -545,7 +545,7 @@
 
         // Reset function
         function reset() {
-            document.getElementById('earthYears').value = '16';
+            document.getElementById('earthYears').value = '';
             calculate();
         }
 
