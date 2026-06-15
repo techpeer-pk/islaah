@@ -27,7 +27,7 @@
         /* Animated clouds */
         .cloud {
             position: fixed;
-            opacity: 0.9;
+            opacity: 0.4;
             pointer-events: none;
             z-index: 0;
         }
@@ -313,8 +313,18 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            width: 100%;
             animation: slideIn 0.8s ease-out 0.4s both;
+        }
+
+        .button-wrapper {
+            display: flex;
+            gap: 12px;
+            animation: slideIn 0.8s ease-out 0.4s both;
+        }
+
+        .button-wrapper button {
+            flex: 1;
+            animation: none;
         }
 
         .btn-calculate {
@@ -329,6 +339,24 @@
         }
 
         .btn-calculate:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, rgba(173, 216, 230, 0.4), rgba(216, 191, 216, 0.3));
+            color: #5ba3d0;
+            border: 1.5px solid rgba(173, 216, 230, 0.6);
+            box-shadow: 0 4px 12px rgba(173, 216, 230, 0.15);
+        }
+
+        .btn-reset:hover {
+            background: linear-gradient(135deg, rgba(173, 216, 230, 0.5), rgba(216, 191, 216, 0.4));
+            border-color: rgba(91, 163, 208, 0.8);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(173, 216, 230, 0.25);
+        }
+
+        .btn-reset:active {
             transform: translateY(-2px);
         }
 
@@ -437,16 +465,19 @@
                 <div class="result-unit" id="resultBreakdown">0.016 days • 1.296 hours</div>
             </div>
 
-            <button class="btn-calculate" onclick="calculate()">Calculate</button>
+            <div class="button-wrapper">
+                <button class="btn-calculate" onclick="calculate()">Calculate</button>
+                <button class="btn-reset" onclick="reset()">Reset</button>
+            </div>
 
             <div class="info-box">
-                <strong>✨ The fact:</strong> 1 planet day = 1000 Earth years. Enter Earth years to see how much time passes on the planet in real-time!
+                <strong>✨ Fun fact:</strong> 1 planet day = 1000 Earth years. Enter Earth years to see how much time passes on the planet in real-time!
             </div>
         </div>
     </div>
 
     <footer class="footer">
-        <p>Developed By: <a href="https://techpeer.web.app/" target="_blank" rel="noopener noreferrer">TechPeer</a> 2026<sup>©</sup></p>
+        <p>Developed By: <a href="https://techpeer.web.app/" target="_blank" rel="noopener noreferrer">TechPeer</a></p>
     </footer>
 
     <script>
@@ -511,6 +542,12 @@
 
         // Calculate on input change (real-time)
         document.getElementById('earthYears').addEventListener('input', calculate);
+
+        // Reset function
+        function reset() {
+            document.getElementById('earthYears').value = '16';
+            calculate();
+        }
 
         // Initial calculation
         calculate();
