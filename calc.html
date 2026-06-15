@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planet Time Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+            background: linear-gradient(135deg, #e0f6ff 0%, #f0e6ff 50%, #ffe6f0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 20px 80px 20px;
+            color: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated clouds */
+        .cloud {
+            position: fixed;
+            opacity: 0.9;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cloud-1 {
+            width: 300px;
+            height: 60px;
+            background: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+            border-radius: 100px;
+            top: 10%;
+            left: -300px;
+            animation: float 25s infinite linear;
+        }
+
+        .cloud-2 {
+            width: 250px;
+            height: 50px;
+            background: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+            border-radius: 100px;
+            top: 25%;
+            right: -250px;
+            animation: float-reverse 30s infinite linear;
+        }
+
+        .cloud-3 {
+            width: 280px;
+            height: 55px;
+            background: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+            border-radius: 100px;
+            top: 70%;
+            left: -280px;
+            animation: float 35s infinite linear;
+        }
+
+        .cloud-4 {
+            width: 320px;
+            height: 65px;
+            background: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+            border-radius: 100px;
+            top: 80%;
+            right: -320px;
+            animation: float-reverse 28s infinite linear;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateX(0) translateY(0);
+            }
+            50% {
+                transform: translateX(100px) translateY(-20px);
+            }
+            to {
+                transform: translateX(100vw) translateY(0);
+            }
+        }
+
+        @keyframes float-reverse {
+            from {
+                transform: translateX(0) translateY(0);
+            }
+            50% {
+                transform: translateX(-100px) translateY(20px);
+            }
+            to {
+                transform: translateX(-100vw) translateY(0);
+            }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, rgba(173, 216, 230, 0.4), rgba(135, 206, 235, 0.2));
+            top: 10%;
+            left: 5%;
+            animation: float-orb 8s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, rgba(230, 230, 250, 0.3), rgba(216, 191, 216, 0.1));
+            bottom: 15%;
+            right: 8%;
+            animation: float-orb 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float-orb {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #5ba3d0 0%, #8e7cc3 50%, #d084d0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.95em;
+            color: #7a9ec4;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(173, 216, 230, 0.5);
+            border-radius: 30px;
+            padding: 45px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(173, 216, 230, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            animation: slideIn 0.8s ease-out 0.1s both;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+            animation: slideIn 0.8s ease-out 0.2s both;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #5a7a8f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, rgba(224, 246, 255, 0.6), rgba(240, 230, 255, 0.6));
+            border: 1.5px solid rgba(173, 216, 230, 0.5);
+            border-radius: 15px;
+            color: #2c3e50;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-field::placeholder {
+            color: #a8c9d9;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #5ba3d0;
+            background: linear-gradient(135deg, rgba(224, 246, 255, 0.9), rgba(240, 230, 255, 0.9));
+            box-shadow: 0 0 20px rgba(173, 216, 230, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .unit {
+            padding: 14px 18px;
+            background: linear-gradient(135deg, rgba(173, 216, 230, 0.3), rgba(216, 191, 216, 0.2));
+            border: 1.5px solid rgba(173, 216, 230, 0.4);
+            border-radius: 15px;
+            color: #5a7a8f;
+            font-size: 0.9em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 35px 0;
+            color: #a8c9d9;
+            font-size: 1.8em;
+            opacity: 0.6;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .result-group {
+            background: linear-gradient(135deg, rgba(173, 216, 230, 0.2), rgba(216, 191, 216, 0.15));
+            border: 1.5px solid rgba(173, 216, 230, 0.4);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            animation: slideIn 0.8s ease-out 0.3s both;
+        }
+
+        .result-label {
+            font-size: 0.85em;
+            color: #5a7a8f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .result-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #5ba3d0;
+            word-break: break-word;
+            margin-bottom: 8px;
+        }
+
+        .result-unit {
+            font-size: 0.9em;
+            color: #8e7cc3;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        button {
+            padding: 15px 32px;
+            border: none;
+            border-radius: 15px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            width: 100%;
+            animation: slideIn 0.8s ease-out 0.4s both;
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #5ba3d0 0%, #8e7cc3 50%, #d084d0 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(91, 163, 208, 0.3);
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(91, 163, 208, 0.4);
+        }
+
+        .btn-calculate:active {
+            transform: translateY(-2px);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(135, 206, 235, 0.15), rgba(216, 191, 216, 0.1));
+            border-left: 4px solid #5ba3d0;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            color: #5a7a8f;
+            margin-top: 20px;
+            line-height: 1.7;
+            animation: slideIn 0.8s ease-out 0.5s both;
+        }
+
+        .info-box strong {
+            color: #5ba3d0;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(173, 216, 230, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            font-size: 0.85em;
+            color: #5a7a8f;
+        }
+
+        .footer a {
+            color: #5ba3d0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 1.5px solid transparent;
+        }
+
+        .footer a:hover {
+            color: #8e7cc3;
+            border-bottom-color: #8e7cc3;
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.8em;
+            }
+
+            .calculator {
+                padding: 28px;
+            }
+
+            .input-wrapper {
+                flex-direction: column;
+            }
+
+            .unit {
+                width: 100%;
+            }
+
+            .result-value {
+                font-size: 1.6em;
+            }
+
+            .cloud-1, .cloud-2, .cloud-3, .cloud-4 {
+                opacity: 0.25;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated clouds -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="cloud cloud-4"></div>
+
+    <!-- Floating orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🌌 Planet Time</h1>
+            <p class="subtitle">Discover time across the cosmos</p>
+        </div>
+
+        <div class="calculator">
+            <div class="input-group">
+                <label>Earth Years</label>
+                <div class="input-wrapper">
+                    <input type="number" id="earthYears" class="input-field" placeholder="Enter years" value="16">
+                    <div class="unit">Years</div>
+                </div>
+            </div>
+
+            <div class="divider">✨</div>
+
+            <div class="result-group">
+                <div class="result-label">Time on Planet</div>
+                <div class="result-value" id="result">23.04 minutes</div>
+                <div class="result-unit" id="resultBreakdown">0.016 days • 1.296 hours</div>
+            </div>
+
+            <button class="btn-calculate" onclick="calculate()">Calculate</button>
+
+            <div class="info-box">
+                <strong>✨ The fact:</strong> 1 planet day = 1000 Earth years. Enter Earth years to see how much time passes on the planet in real-time!
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Developed By: <a href="https://techpeer.web.app/" target="_blank" rel="noopener noreferrer">TechPeer</a> 2026<sup>©</sup></p>
+    </footer>
+
+    <script>
+        const CONVERSION_RATIO = 1000; // Backend constant: 1 planet day = 1000 Earth years
+
+        function calculate() {
+            const earthYearsInput = document.getElementById('earthYears').value.trim();
+
+            if (!earthYearsInput) {
+                document.getElementById('result').textContent = 'Enter Earth years to calculate';
+                document.getElementById('resultBreakdown').textContent = '';
+                return;
+            }
+
+            const earthYears = parseFloat(earthYearsInput);
+
+            if (isNaN(earthYears)) {
+                document.getElementById('result').textContent = 'Please enter a valid number';
+                document.getElementById('resultBreakdown').textContent = '';
+                return;
+            }
+
+            if (earthYears < 0) {
+                document.getElementById('result').textContent = 'Years cannot be negative';
+                document.getElementById('resultBreakdown').textContent = '';
+                return;
+            }
+
+            // Calculate planet days
+            const planetDays = earthYears / CONVERSION_RATIO;
+            
+            // Convert to minutes for smart unit conversion
+            const totalMinutes = planetDays * 24 * 60;
+            
+            let displayValue;
+            let breakdown;
+
+            if (totalMinutes < 1) {
+                // Show in seconds
+                const seconds = totalMinutes * 60;
+                displayValue = seconds.toFixed(2) + ' seconds';
+                breakdown = `${planetDays.toFixed(6)} days • ${(planetDays * 24).toFixed(4)} hours`;
+            } else if (totalMinutes < 60) {
+                // Show in minutes
+                displayValue = totalMinutes.toFixed(2) + ' minutes';
+                breakdown = `${planetDays.toFixed(6)} days • ${(planetDays * 24).toFixed(4)} hours`;
+            } else {
+                // Show in hours
+                const hours = totalMinutes / 60;
+                displayValue = hours.toFixed(2) + ' hours';
+                breakdown = `${planetDays.toFixed(6)} days • ${totalMinutes.toFixed(2)} minutes`;
+            }
+
+            document.getElementById('result').textContent = displayValue;
+            document.getElementById('resultBreakdown').textContent = breakdown;
+        }
+
+        // Calculate on Enter key
+        document.getElementById('earthYears').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') calculate();
+        });
+
+        // Calculate on input change (real-time)
+        document.getElementById('earthYears').addEventListener('input', calculate);
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>
